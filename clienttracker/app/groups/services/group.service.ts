@@ -2,21 +2,15 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Group } from '../model/group';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-// import 'rxjs/add/operator/map';
 
 declare var firebase: any;
 
 @Injectable()
 export class GroupService{
   groupDb: any;
-  // private _groups: BehaviorSubject<Group[]>;
-  // private groups: Group[];
 
   constructor(){
     this.groupDb = firebase.database().ref('/').child('groups');
-    // this.groups = [];
-    // this._groups = new BehaviorSubject([]);
   }
 
   addGroup(newGroup: string): void{
@@ -33,5 +27,29 @@ export class GroupService{
         observer.next(groupread);
       });
     });
+  }
+
+  getGroup(id: string): Group{
+    let dbRef = firebase.database().ref('/').child('groups/'+id);
+    let groupRead: Group;
+    dbRef.on('value', snapshot => {
+      groupRead = new Group(snapshot.key, snapshot.val().name);
+    });
+    return groupRead;
+  }
+
+  deleteGroup(id: string): void{
+    let dbRef = firebase.database().ref('/').child('groups/'+id);
+    dbRef.remove();
+    console.log('removed');
+    return;
+  }
+
+  editGroup(updatedGroup: Group): void{
+    let dbRef = firebase.database().ref('/').child('groups/'+updatedGroup.id);
+    dbRef.update({
+      name: updatedGroup.name
+    });
+    return;
   }
 }

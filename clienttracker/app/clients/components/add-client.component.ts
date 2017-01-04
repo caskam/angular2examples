@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, } from '@angular/core';
 import {
     FormGroup,
     FormBuilder,
@@ -6,7 +6,10 @@ import {
     FormControl
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { OnInit, OnDestroy } from '@angular/core';
 import { ClientService } from '../services/client.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Group } from '../../groups/model/group';
 
 @Component({
   selector: 'add-client',
@@ -62,17 +65,20 @@ import { ClientService } from '../services/client.service';
     </div>
   `,
 })
-export class AddClientComponent  {
+export class AddClientComponent implements OnInit, OnDestroy {
   form: FormGroup;
   firstName: FormControl;
   email: FormControl;
   public newClient: any = {};
+  groups: Group[];
+  subscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private _clientService: ClientService,
     private _router: Router
   ){
+    this.groups = [];
     this.firstName = new FormControl(
       "",
       Validators.compose([
@@ -96,5 +102,16 @@ export class AddClientComponent  {
     this._clientService.addNewClient(this.newClient);
     this.newClient = {};
     this._router.navigateByUrl('clients');
+  }
+
+  ngOnInit(){
+    this.subscription = this._clientService.getGroups().subscribe(
+      returnedGroup => {
+        this.groups.push(returnedGroup);
+      }
+    );
+  }
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }

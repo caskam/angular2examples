@@ -10,27 +10,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var group_service_1 = require('../services/group.service');
+var router_1 = require('@angular/router');
 var GroupListComponent = (function () {
-    function GroupListComponent(_groupService) {
+    function GroupListComponent(_groupService, _router) {
         this._groupService = _groupService;
+        this._router = _router;
         this.groups = [];
     }
     GroupListComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.subscription = this._groupService.getGroups().subscribe(function (returnedGroup) {
             _this.groups.push(returnedGroup);
-            console.log('Returned Log = ' + returnedGroup);
         });
     };
     GroupListComponent.prototype.ngOnDestroy = function () {
         this.subscription.unsubscribe();
     };
+    GroupListComponent.prototype.deleteGroup = function (id) {
+        var _this = this;
+        this.groups.forEach(function (group, index) {
+            if (group.id == id) {
+                _this.groups.splice(index, 1);
+            }
+        });
+        this._groupService.deleteGroup(id);
+    };
     GroupListComponent = __decorate([
         core_1.Component({
             selector: 'group-list',
-            template: "\n    <h2>Group List</h2>\n    <div *ngIf=\"groups\">\n      <table class=\"w3-table w3-bordered w3-striped\">\n      <tr>\n        <th>ID</th>\n        <th>Name</th>\n        <th></th>\n      </tr>\n      <tr *ngFor=\"let group of groups, let i = index\">\n        <td>{{group.id}}</td>\n        <td>{{group.name}}</td>\n        <td>\n          <a [routerLink]=\"['groups/edit', group.id]\" class=\"w3-btn w3-green\">Edit\"</a>\n          <button (click)=\"deleteGroup()\" class=\"w3-btn w3-red\">Delete</button>\n        </td>\n      </tr>\n      </table>\n    </div>\n  ",
+            template: "\n    <h2>Group List</h2>\n    <div *ngIf=\"groups\">\n      <table class=\"w3-table w3-bordered w3-striped\">\n      <tr>\n        <th>ID</th>\n        <th>Name</th>\n        <th></th>\n      </tr>\n      <tr *ngFor=\"let group of groups, let i = index\">\n        <td>{{group.id}}</td>\n        <td>{{group.name}}</td>\n        <td>\n          <a [routerLink]=\"['/groups/edit', group.id]\" class=\"w3-btn w3-green\">Edit</a>\n          <button (click)=\"deleteGroup(group.id)\" class=\"w3-btn w3-red\">Delete</button>\n        </td>\n      </tr>\n      </table>\n    </div>\n  ",
         }), 
-        __metadata('design:paramtypes', [group_service_1.GroupService])
+        __metadata('design:paramtypes', [group_service_1.GroupService, router_1.Router])
     ], GroupListComponent);
     return GroupListComponent;
 }());

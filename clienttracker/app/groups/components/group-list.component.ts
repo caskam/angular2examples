@@ -21,8 +21,8 @@ import { Subscription } from 'rxjs/Subscription';
         <td>{{group.id}}</td>
         <td>{{group.name}}</td>
         <td>
-          <a [routerLink]="['groups/edit', group.id]" class="w3-btn w3-green">Edit"</a>
-          <button (click)="deleteGroup()" class="w3-btn w3-red">Delete</button>
+          <a [routerLink]="['/groups/edit', group.id]" class="w3-btn w3-green">Edit</a>
+          <button (click)="deleteGroup(group.id)" class="w3-btn w3-red">Delete</button>
         </td>
       </tr>
       </table>
@@ -33,18 +33,30 @@ import { Subscription } from 'rxjs/Subscription';
 export class GroupListComponent implements OnInit, OnDestroy {
   groups: Group[];
   subscription: Subscription;
-  constructor(private _groupService: GroupService){
+  constructor(
+    private _groupService: GroupService,
+    private _router: Router
+  ){
     this.groups = [];
   }
 
   ngOnInit(){
       this.subscription = this._groupService.getGroups().subscribe(returnedGroup => {
         this.groups.push(returnedGroup);
-        console.log('Returned Log = ' + returnedGroup);
       });
   }
 
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }
+
+  deleteGroup(id: string){
+    this.groups.forEach((group, index) => {
+      if (group.id == id){
+        this.groups.splice(index, 1);
+      }
+    });
+    this._groupService.deleteGroup(id);
+  }
+
 }

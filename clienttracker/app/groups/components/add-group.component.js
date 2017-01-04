@@ -26,7 +26,6 @@ var AddGroupComponent = (function () {
         });
     }
     AddGroupComponent.prototype.addNewGroup = function () {
-        console.log(this.groupName);
         this._groupService.addGroup(this.groupName);
         this.groupName = '';
         this._router.navigateByUrl('groups');

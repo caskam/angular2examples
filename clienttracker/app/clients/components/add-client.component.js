@@ -18,6 +18,7 @@ var AddClientComponent = (function () {
         this._clientService = _clientService;
         this._router = _router;
         this.newClient = {};
+        this.groups = [];
         this.firstName = new forms_1.FormControl("", forms_1.Validators.compose([
             forms_1.Validators.required, forms_1.Validators.minLength(3)
         ]));
@@ -34,6 +35,15 @@ var AddClientComponent = (function () {
         this._clientService.addNewClient(this.newClient);
         this.newClient = {};
         this._router.navigateByUrl('clients');
+    };
+    AddClientComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subscription = this._clientService.getGroups().subscribe(function (returnedGroup) {
+            _this.groups.push(returnedGroup);
+        });
+    };
+    AddClientComponent.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
     };
     AddClientComponent = __decorate([
         core_1.Component({

@@ -54,7 +54,6 @@ export class AddGroupComponent  {
   }
 
   addNewGroup(){
-    console.log(this.groupName);
     this._groupService.addGroup(this.groupName);
     this.groupName = '';
     this._router.navigateByUrl('groups');

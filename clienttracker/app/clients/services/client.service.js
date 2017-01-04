@@ -9,9 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-require('rxjs/add/operator/map');
+var Observable_1 = require('rxjs/Observable');
+var client_1 = require('../model/client');
+var group_service_1 = require('../../groups/services/group.service');
 var ClientService = (function () {
-    function ClientService() {
+    function ClientService(_groupService) {
+        this._groupService = _groupService;
         this.group = 'Web Design';
         this.clientDb = firebase.database().ref('/').child('clients');
     }
@@ -29,9 +32,50 @@ var ClientService = (function () {
         });
         return;
     };
+    ClientService.prototype.getClients = function () {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            var listener = _this.clientDb.on('child_added', function (snapshot) {
+                var clientread = new client_1.Client(snapshot.key, snapshot.val().firstName, snapshot.val().lastName, snapshot.val().group, snapshot.val().email, snapshot.val().phone, snapshot.val().address, snapshot.val().city, snapshot.val().state, snapshot.val().zipcode);
+                observer.next(clientread);
+            });
+        });
+    };
+    ClientService.prototype.getGroups = function () {
+        return this._groupService.getGroups();
+    };
+    ClientService.prototype.getClientDetails = function (id) {
+        var dbRef = firebase.database().ref("/").child('clients/' + id);
+        var clientRead;
+        dbRef.on('value', function (snapshot) {
+            clientRead = new client_1.Client(snapshot.key, snapshot.val().firstName, snapshot.val().lastName, snapshot.val().group, snapshot.val().email, snapshot.val().phone, snapshot.val().address, snapshot.val().city, snapshot.val().state, snapshot.val().zipcode);
+        });
+        return clientRead;
+    };
+    ClientService.prototype.deleteClient = function (id) {
+        var dbRef = firebase.database().ref('/').child('clients/' + id);
+        dbRef.remove();
+        console.log('removed');
+        return;
+    };
+    ClientService.prototype.editClient = function (updatedClient) {
+        var dbRef = firebase.database().ref('/').child('clients/' + updatedClient.id);
+        dbRef.update({
+            firstName: updatedClient.firstName,
+            lstName: updatedClient.lastName,
+            group: updatedClient.group,
+            email: updatedClient.email,
+            phone: updatedClient.phone,
+            address: updatedClient.address,
+            state: updatedClient.state,
+            city: updatedClient.city,
+            zipcode: updatedClient.zipcode
+        });
+        return;
+    };
     ClientService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [group_service_1.GroupService])
     ], ClientService);
     return ClientService;
 }());

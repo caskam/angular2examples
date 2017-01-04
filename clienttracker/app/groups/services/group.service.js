@@ -12,12 +12,8 @@ var core_1 = require('@angular/core');
 var Observable_1 = require('rxjs/Observable');
 var group_1 = require('../model/group');
 var GroupService = (function () {
-    // private _groups: BehaviorSubject<Group[]>;
-    // private groups: Group[];
     function GroupService() {
         this.groupDb = firebase.database().ref('/').child('groups');
-        // this.groups = [];
-        // this._groups = new BehaviorSubject([]);
     }
     GroupService.prototype.addGroup = function (newGroup) {
         this.groupDb.push({
@@ -33,6 +29,27 @@ var GroupService = (function () {
                 observer.next(groupread);
             });
         });
+    };
+    GroupService.prototype.getGroup = function (id) {
+        var dbRef = firebase.database().ref('/').child('groups/' + id);
+        var groupRead;
+        dbRef.on('value', function (snapshot) {
+            groupRead = new group_1.Group(snapshot.key, snapshot.val().name);
+        });
+        return groupRead;
+    };
+    GroupService.prototype.deleteGroup = function (id) {
+        var dbRef = firebase.database().ref('/').child('groups/' + id);
+        dbRef.remove();
+        console.log('removed');
+        return;
+    };
+    GroupService.prototype.editGroup = function (updatedGroup) {
+        var dbRef = firebase.database().ref('/').child('groups/' + updatedGroup.id);
+        dbRef.update({
+            name: updatedGroup.name
+        });
+        return;
     };
     GroupService = __decorate([
         core_1.Injectable(), 

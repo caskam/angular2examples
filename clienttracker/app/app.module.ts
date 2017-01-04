@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { GroupListComponent } from './groups/components/group-list.component';
 import { AddGroupComponent } from './groups/components/add-group.component';
 import { EditGroupComponent } from './groups/components/edit-group.component';
+import { FilterArrayPipe } from './clients/pipe/filter.pipe';
 
 const appRoutes: Routes = [
   { path: '',                       component: DashboardComponent },
@@ -30,7 +31,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     JsonpModule,
-    FormsModule, 
+    FormsModule,
     RouterModule.forRoot(appRoutes)//,
     // AngularFireModule.initializeApp(firebaseConfig)
   ],
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
     EditClientComponent,
     GroupListComponent,
     AddGroupComponent,
-    EditGroupComponent
+    EditGroupComponent,
+    FilterArrayPipe
   ],
   bootstrap:    [ AppComponent ]
 })

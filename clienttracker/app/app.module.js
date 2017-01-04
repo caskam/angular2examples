@@ -22,6 +22,7 @@ var dashboard_component_1 = require('./dashboard/components/dashboard.component'
 var group_list_component_1 = require('./groups/components/group-list.component');
 var add_group_component_1 = require('./groups/components/add-group.component');
 var edit_group_component_1 = require('./groups/components/edit-group.component');
+var filter_pipe_1 = require('./clients/pipe/filter.pipe');
 var appRoutes = [
     { path: '', component: dashboard_component_1.DashboardComponent },
     { path: 'clients', component: client_list_component_1.ClientListComponent },
@@ -54,7 +55,8 @@ var AppModule = (function () {
                 edit_client_component_1.EditClientComponent,
                 group_list_component_1.GroupListComponent,
                 add_group_component_1.AddGroupComponent,
-                edit_group_component_1.EditGroupComponent
+                edit_group_component_1.EditGroupComponent,
+                filter_pipe_1.FilterArrayPipe
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
