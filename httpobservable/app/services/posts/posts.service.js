@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+require("rxjs/add/operator/map");
 var PostsService = (function () {
     function PostsService(_http) {
         this._http = _http;
@@ -20,11 +20,12 @@ var PostsService = (function () {
         return this._http.get(this.postsUrl)
             .map(function (res) { return res.json(); });
     };
-    PostsService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], PostsService);
     return PostsService;
 }());
+PostsService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [typeof (_a = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _a || Object])
+], PostsService);
 exports.PostsService = PostsService;
+var _a;
 //# sourceMappingURL=posts.service.js.map

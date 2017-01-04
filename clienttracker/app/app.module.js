@@ -42,7 +42,8 @@ var AppModule = (function () {
                 forms_1.ReactiveFormsModule,
                 http_1.HttpModule,
                 http_1.JsonpModule,
-                router_1.RouterModule.forRoot(appRoutes)
+                forms_1.FormsModule,
+                router_1.RouterModule.forRoot(appRoutes) //,
             ],
             declarations: [
                 app_component_1.AppComponent,

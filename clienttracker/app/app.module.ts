@@ -1,7 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
 import { ClientListComponent } from './clients/components/client-list.component';
@@ -30,7 +30,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     JsonpModule,
-    RouterModule.forRoot(appRoutes)
+    FormsModule, 
+    RouterModule.forRoot(appRoutes)//,
+    // AngularFireModule.initializeApp(firebaseConfig)
   ],
   declarations: [
     AppComponent,

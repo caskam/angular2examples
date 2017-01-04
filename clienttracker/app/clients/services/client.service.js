@@ -12,7 +12,23 @@ var core_1 = require('@angular/core');
 require('rxjs/add/operator/map');
 var ClientService = (function () {
     function ClientService() {
+        this.group = 'Web Design';
+        this.clientDb = firebase.database().ref('/').child('clients');
     }
+    ClientService.prototype.addNewClient = function (newClient) {
+        this.clientDb.push({
+            firstName: newClient.firstName,
+            lastName: newClient.lastName,
+            group: this.group,
+            email: newClient.email,
+            phone: newClient.phone,
+            address: newClient.address,
+            city: newClient.city,
+            state: newClient.state,
+            zipcode: newClient.zipcode
+        });
+        return;
+    };
     ClientService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])

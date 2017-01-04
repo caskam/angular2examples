@@ -10,11 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var forms_1 = require('@angular/forms');
+var router_1 = require('@angular/router');
 var group_service_1 = require('../services/group.service');
 var AddGroupComponent = (function () {
-    function AddGroupComponent(_fb, _groupService) {
+    function AddGroupComponent(_fb, _groupService, _router) {
         this._fb = _fb;
         this._groupService = _groupService;
+        this._router = _router;
         this.name = new forms_1.FormControl("", forms_1.Validators.compose([
             forms_1.Validators.required,
             forms_1.Validators.minLength(3)
@@ -25,14 +27,16 @@ var AddGroupComponent = (function () {
     }
     AddGroupComponent.prototype.addNewGroup = function () {
         console.log(this.groupName);
-        // this._groupServuce.addGroup(this.groupName);
+        this._groupService.addGroup(this.groupName);
+        this.groupName = '';
+        this._router.navigateByUrl('groups');
     };
     AddGroupComponent = __decorate([
         core_1.Component({
             selector: 'add-group',
-            template: "\n    <div class=\"w3-card-4\">\n      <div class=\"container w3-green\">\n        <h2>Add Group</h2>\n      </div>\n      <div>\n        <form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\">\n          <div class=\"form-group\">\n            <label class=\"w3-label\">Group Name</label>\n            <input type=\"text\" class=\"w3-text\" [(ngModel)]=\"groupName\" formControlName=\"name\">\n          </div>\n          <div class=\"form-group\">\n            <button [disabled]=\"!form.valid\" type=\"submit\" class=\"w3-btn w3-light-grey\">Submit Data</button>\n          </div>\n        </form>\n      </div>\n    </div>\n  ",
+            template: "\n    <div class=\"w3-card-4\">\n      <div class=\"container w3-green\">\n        <h2>Add Group</h2>\n      </div>\n      <div>\n        <form [formGroup]=\"form\" (ngSubmit)=\"addNewGroup()\" class=\"w3-padding-16\">\n          <div class=\"form-group\">\n            <label class=\"w3-label\">Group Name</label>\n            <input type=\"text\" class=\"w3-text\" [(ngModel)]=\"groupName\" formControlName=\"name\">\n          </div>\n          <div class=\"form-group\">\n            <button [disabled]=\"!form.valid\" type=\"submit\" class=\"w3-btn w3-light-grey\">Submit Data</button>\n          </div>\n        </form>\n      </div>\n    </div>\n  ",
         }), 
-        __metadata('design:paramtypes', [forms_1.FormBuilder, group_service_1.GroupService])
+        __metadata('design:paramtypes', [forms_1.FormBuilder, group_service_1.GroupService, router_1.Router])
     ], AddGroupComponent);
     return AddGroupComponent;
 }());
